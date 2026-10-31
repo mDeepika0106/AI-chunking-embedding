@@ -31,10 +31,10 @@ LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2")
 TOP_K = int(os.getenv("TOP_K", "4"))
 
 # --- 5. Postgres + pgvector ------------------------------------------------
-POSTGRES_HOST = os.getenv("POSTGRES_HOST", "db.fwgmzkidaiffampcxvap.supabase.co")
-POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", "5433"))
 POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
 POSTGRES_DB = os.getenv("POSTGRES_DB", "postgres")
 TABLE_NAME = os.getenv("TABLE_NAME", "document_chunks")
 

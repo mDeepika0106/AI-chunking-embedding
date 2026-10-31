@@ -49,7 +49,6 @@ def check_ollama() -> bool:
 
     return has_embed and has_llm
 
-
 def check_postgres() -> bool:
     try:
         conn = psycopg.connect(
@@ -57,24 +56,42 @@ def check_postgres() -> bool:
             port=config.POSTGRES_PORT,
             user=config.POSTGRES_USER,
             password=config.POSTGRES_PASSWORD,
-            dbname="postgres",
+            dbname=config.POSTGRES_DB,
             connect_timeout=5,
         )
+
         with conn.cursor() as cur:
-            cur.execute("SELECT 1 FROM pg_available_extensions WHERE name = 'vector'")
+            cur.execute(
+                "SELECT 1 FROM pg_extension WHERE extname = 'vector'"
+            )
             has_vector = cur.fetchone() is not None
+
         conn.close()
+
     except Exception as e:
-        print(f"[FAIL] Could not connect to Postgres at {config.POSTGRES_HOST}:{config.POSTGRES_PORT} ({e})")
+        print(
+            f"[FAIL] Could not connect to Postgres at "
+            f"{config.POSTGRES_HOST}:{config.POSTGRES_PORT} ({e})"
+        )
         return False
 
-    print(f"[OK] Connected to Postgres at {config.POSTGRES_HOST}:{config.POSTGRES_PORT}")
-    print(f"[{'OK' if has_vector else 'FAIL'}] pgvector extension available on this server")
+    print(
+        f"[OK] Connected to Postgres at "
+        f"{config.POSTGRES_HOST}:{config.POSTGRES_PORT}"
+    )
+
+    print(
+        f"[{'OK' if has_vector else 'FAIL'}] "
+        f"pgvector extension available on this server"
+    )
+
     if not has_vector:
-        print("       Install it (e.g. `brew install pgvector` then restart Postgres)")
+        print(
+            "       Install it (e.g. `brew install pgvector` then restart Postgres)"
+        )
+
     return has_vector
-
-
+    
 if __name__ == "__main__":
     print("Running preflight checks...\n")
     results = [check_corpus(), check_ollama(), check_postgres()]

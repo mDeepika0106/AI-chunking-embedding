@@ -64,5 +64,5 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     do_generate = "--no-generate" not in args
     args = [a for a in args if a != "--no-generate"]
-    query = " ".join(args) or "How do I change a tyre on an Aventro car?"
+    query = " ".join(args) or "How do I adjust the seat position?"
     ask(query, generate=do_generate)
